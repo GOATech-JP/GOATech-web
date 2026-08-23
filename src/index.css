@@ -1,0 +1,45 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;600;700&display=swap');
+@import 'tailwindcss';
+
+@theme inline {
+  --color-background: #ffffff;
+  --color-foreground: #0f1f3d;
+  --color-card: #f8faff;
+  --color-card-foreground: #0f1f3d;
+  --color-primary: #3a00d5;
+  --color-primary-foreground: #ffffff;
+  --color-secondary: #f3f0ff;
+  --color-secondary-foreground: #3a00d5;
+  --color-muted: #f1f5f9;
+  --color-muted-foreground: #64748b;
+  --color-accent: #6b3ff7;
+  --color-accent-foreground: #ffffff;
+  --color-border: #e2e8f0;
+  --color-ring: #3a00d5;
+  --radius: 8px;
+}
+
+* {
+  font-family: 'Noto Sans JP', 'DM Sans', sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 64px;
+}
+
+body {
+  background-color: #ffffff;
+  color: #0f1f3d;
+}
+
+::-webkit-scrollbar {
+  width: 4px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 2px;
+}

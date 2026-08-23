@@ -1,0 +1,10 @@
+{
+  "description": "Creates a professional landing page showcasing Rendix products for GOATech, enhancing brand presence and engaging potential customers effectively.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}
