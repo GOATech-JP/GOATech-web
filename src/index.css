@@ -66,6 +66,10 @@ body {
 	animation: mango-run-bounce 125ms ease-in-out infinite alternate;
 }
 
+.mango-sprite__image.is-frozen {
+	animation: none;
+}
+
 @keyframes mango-run-trigger {
 
 	0%,
