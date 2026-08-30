@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import MangoRunEasterEgg,{ useMangoRun } from './components/MangoRunEasterEgg'
 
 /* ─── DATA ─────────────────────────────────────────────── */
 const problems = [
@@ -67,39 +68,39 @@ const strengths = [
 ]
 
 const flowSteps = [
-  { num: '01', title: 'お問い合わせ', desc: 'フォームまたはお電話にてお気軽にご相談ください。' },
-  { num: '02', title: 'ヒアリング', desc: '現状の業務フローや課題をヒアリングし、最適な導入プランをご提案します。' },
-  { num: '03', title: '初期設定・トライアル導入', desc: '商品・在庫・顧客データの移行と初期設定を行い、実際の環境でお試しいただきます。' },
-  { num: '04', title: '運用開始・サポート開始', desc: '本番稼働後も専任担当者がサポート。安心してご利用いただけます。' },
+  { num: '01',title: 'お問い合わせ',desc: 'フォームまたはお電話にてお気軽にご相談ください。' },
+  { num: '02',title: 'ヒアリング',desc: '現状の業務フローや課題をヒアリングし、最適な導入プランをご提案します。' },
+  { num: '03',title: '初期設定・トライアル導入',desc: '商品・在庫・顧客データの移行と初期設定を行い、実際の環境でお試しいただきます。' },
+  { num: '04',title: '運用開始・サポート開始',desc: '本番稼働後も専任担当者がサポート。安心してご利用いただけます。' },
 ]
 
 const faqs = [
-  { q: '導入期間はどれくらいかかりますか？', a: '標準的な導入期間は2〜4週間です。データ移行の規模や業務フローの複雑さによって変動します。' },
-  { q: '既存のデータを移行できますか？', a: 'Excelや他システムからのデータ移行に対応しています。専任担当者がサポートします。' },
-  { q: 'サポート体制はどうなっていますか？', a: 'メール・電話によるサポートを提供。導入後も安心してご利用いただけます。' },
-  { q: 'セキュリティは大丈夫ですか？', a: 'SSL暗号化通信・定期バックアップ・アクセス権限管理など、エンタープライズグレードのセキュリティを提供しています。' },
+  { q: '導入期間はどれくらいかかりますか？',a: '標準的な導入期間は2〜4週間です。データ移行の規模や業務フローの複雑さによって変動します。' },
+  { q: '既存のデータを移行できますか？',a: 'Excelや他システムからのデータ移行に対応しています。専任担当者がサポートします。' },
+  { q: 'サポート体制はどうなっていますか？',a: 'メール・電話によるサポートを提供。導入後も安心してご利用いただけます。' },
+  { q: 'セキュリティは大丈夫ですか？',a: 'SSL暗号化通信・定期バックアップ・アクセス権限管理など、エンタープライズグレードのセキュリティを提供しています。' },
 ]
 
 const companyInfo = [
-  { label: '会社名', value: '合同会社GOATech' },
-  { label: '所在地', value: '〒212-0055 神奈川県川崎市幸区南加瀬5-5-63' },
-  { label: '設立', value: '2026年10月予定' },
-  { label: '代表者', value: '藤城 龍之介' },
-  { label: '事業内容', value: 'レンタル業向けのSaaSプロダクトの企画・開発・販売' },
+  { label: '会社名',value: '合同会社GOATech' },
+  { label: '所在地',value: '〒212-0055 神奈川県川崎市幸区南加瀬5-5-63' },
+  { label: '設立',value: '2026年10月予定' },
+  { label: '代表者',value: '藤城 龍之介' },
+  { label: '事業内容',value: 'レンタル業向けのSaaSプロダクトの企画・開発・販売' },
 ]
 
 /* ─── COMPONENTS ────────────────────────────────────────── */
 
 const navLinks = [
-  { label: '会社概要', href: '#about-goatech' },
-  { label: 'Rendixとは？', href: '#rendix' },
-  { label: '料金プラン', href: '#price' },
-  { label: 'よくある質問', href: '#faq' },
-  { label: 'お問い合わせ', href: '#contact' },
+  { label: '会社概要',href: '#about-goatech' },
+  { label: 'Rendixとは？',href: '#rendix' },
+  { label: '料金プラン',href: '#price' },
+  { label: 'よくある質問',href: '#faq' },
+  { label: 'お問い合わせ',href: '#contact' },
 ]
 
 function Navbar() {
-  const [open, setOpen] = useState(false)
+  const [open,setOpen] = useState(false)
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-100">
@@ -211,7 +212,7 @@ function Hero() {
               <span className="text-slate-500 text-sm">旧・ExcelやPOS管理</span>
             </div>
             <ul className="space-y-2">
-              {['記入ミス・転記漏れが絶えない', '在庫状況がリアルタイムで不明', '属人化が激しく引き継ぎ困難', '売上分析に膨大な時間が必要'].map((t) => (
+              {['記入ミス・転記漏れが絶えない','在庫状況がリアルタイムで不明','属人化が激しく引き継ぎ困難','売上分析に膨大な時間が必要'].map((t) => (
                 <li key={t} className="flex items-start gap-2 text-sm text-slate-600">
                   <span className="text-red-400 mt-0.5">✕</span> {t}
                 </li>
@@ -224,7 +225,7 @@ function Hero() {
               <span className="text-purple-100 text-sm">Rendixで一元管理</span>
             </div>
             <ul className="space-y-2">
-              {['スキャン操作で受付・返却が即完了', 'リアルタイム在庫・稼働状況を把握', '業務フローが標準化・誰でも操作可', '売上データを自動集計・即座に確認'].map((t) => (
+              {['スキャン操作で受付・返却が即完了','リアルタイム在庫・稼働状況を把握','業務フローが標準化・誰でも操作可','売上データを自動集計・即座に確認'].map((t) => (
                 <li key={t} className="flex items-start gap-2 text-sm text-white">
                   <span className="text-purple-200 mt-0.5">✓</span> {t}
                 </li>
@@ -364,10 +365,10 @@ function StrengthSection() {
                 <div>
                   <h3 className="text-xl font-bold text-[#0f1f3d] mb-3">{s.title}</h3>
                   <p className="text-slate-600 leading-relaxed">
-                {s.lines.map((line, i) => (
-                  <span key={i}>{line}{i < s.lines.length - 1 && <br />}</span>
-                ))}
-              </p>
+                    {s.lines.map((line,i) => (
+                      <span key={i}>{line}{i < s.lines.length - 1 && <br />}</span>
+                    ))}
+                  </p>
                 </div>
               </div>
             </div>
@@ -391,7 +392,7 @@ function FlowSection() {
           {/* Connector line */}
           <div className="hidden md:block absolute top-10 left-[12.5%] right-[12.5%] h-px bg-[#3a00d5]/20" />
           <div className="grid md:grid-cols-4 gap-6">
-            {flowSteps.map((step, i) => (
+            {flowSteps.map((step,i) => (
               <div key={step.num} className="relative text-center group">
                 <div className="w-20 h-20 mx-auto mb-4 rounded-2xl bg-[#f3f0ff] border-2 border-[#3a00d5]/20 flex items-center justify-center group-hover:bg-[#3a00d5] group-hover:border-[#3a00d5] transition-all">
                   <span className="text-2xl font-bold text-[#3a00d5] group-hover:text-white transition-colors font-['DM_Sans']">
@@ -439,7 +440,7 @@ function PriceSection() {
 }
 
 function FAQSection() {
-  const [open, setOpen] = useState<number | null>(null)
+  const [open,setOpen] = useState<number | null>(null)
 
   return (
     <section id="faq" className="py-20 bg-white">
@@ -449,7 +450,7 @@ function FAQSection() {
           <h2 className="text-3xl md:text-4xl font-bold text-[#0f1f3d] mb-4">よくある質問</h2>
         </div>
         <div className="space-y-3">
-          {faqs.map((faq, i) => (
+          {faqs.map((faq,i) => (
             <div key={i} className="border border-slate-100 rounded-2xl overflow-hidden">
               <button
                 className="w-full flex items-center justify-between px-6 py-4 text-left hover:bg-[#f8f5ff] transition-colors"
@@ -524,10 +525,10 @@ function AboutSection() {
                 <div className="text-left">
                   <ul className="space-y-2">
                     {[
-                      { letter: 'G', word: 'Growth', desc: '成長し続ける' },
-                      { letter: 'O', word: 'Obsession', desc: '顧客課題に執着する' },
-                      { letter: 'A', word: 'Ambition', desc: '高い目標に挑戦する' },
-                      { letter: 'T', word: 'Trust', desc: '信頼を築く' },
+                      { letter: 'G',word: 'Growth',desc: '成長し続ける' },
+                      { letter: 'O',word: 'Obsession',desc: '顧客課題に執着する' },
+                      { letter: 'A',word: 'Ambition',desc: '高い目標に挑戦する' },
+                      { letter: 'T',word: 'Trust',desc: '信頼を築く' },
                     ].map((v) => (
                       <li key={v.letter} className="flex items-baseline gap-2 text-sm">
                         <span className="font-bold text-[#3a00d5] w-4">{v.letter}</span>
@@ -565,8 +566,14 @@ function AboutSection() {
 }
 
 function ContactSection() {
-  const [form, setForm] = useState({ name: '', company: '', email: '', message: '' })
-  const [sent, setSent] = useState(false)
+  const [form,setForm] = useState({ name: '',company: '',email: '',message: '' })
+  const [sent,setSent] = useState(false)
+  const {
+    isReady: mangoRunReady,
+    mangoRunRef,
+    handleTriggerClick,
+    handleComplete: handleMangoRunComplete,
+  } = useMangoRun()
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -604,7 +611,7 @@ function ContactSection() {
                   required
                   placeholder="山田 太郎"
                   value={form.name}
-                  onChange={(e) => setForm({ ...form, name: e.target.value })}
+                  onChange={(e) => setForm({ ...form,name: e.target.value })}
                   className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-white/30 text-sm focus:outline-none focus:border-white/50 transition-colors"
                 />
               </div>
@@ -614,7 +621,7 @@ function ContactSection() {
                   type="text"
                   placeholder="株式会社〇〇"
                   value={form.company}
-                  onChange={(e) => setForm({ ...form, company: e.target.value })}
+                  onChange={(e) => setForm({ ...form,company: e.target.value })}
                   className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-white/30 text-sm focus:outline-none focus:border-white/50 transition-colors"
                 />
               </div>
@@ -626,7 +633,7 @@ function ContactSection() {
                 required
                 placeholder="taro@example.com"
                 value={form.email}
-                onChange={(e) => setForm({ ...form, email: e.target.value })}
+                onChange={(e) => setForm({ ...form,email: e.target.value })}
                 className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-white/30 text-sm focus:outline-none focus:border-white/50 transition-colors"
               />
             </div>
@@ -636,27 +643,30 @@ function ContactSection() {
                 rows={4}
                 placeholder="ご質問・ご要望をお気軽にどうぞ"
                 value={form.message}
-                onChange={(e) => setForm({ ...form, message: e.target.value })}
+                onChange={(e) => setForm({ ...form,message: e.target.value })}
                 className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-white/30 text-sm focus:outline-none focus:border-white/50 transition-colors resize-none"
               />
             </div>
             <div className="flex flex-wrap gap-4">
               <button
-                type="submit"
-                className="px-8 py-3 bg-white text-[#3a00d5] font-bold rounded-xl hover:bg-purple-50 transition-colors shadow-lg"
+                type={mangoRunReady ? 'button' : 'submit'}
+                onClick={handleTriggerClick}
+                className={`cursor-pointer px-8 py-3 bg-white text-[#3a00d5] font-bold rounded-xl hover:bg-purple-50 active:scale-95 active:brightness-110 transition-all shadow-lg ${mangoRunReady ? 'mango-run-trigger' : ''}`}
               >
-                送信する
+                {mangoRunReady ? 'GO!!!' : '送信する'}
               </button>
               <button
-                type="submit"
-                className="px-8 py-3 border border-white/30 text-white font-semibold rounded-xl hover:bg-white/10 transition-colors"
+                type={mangoRunReady ? 'button' : 'submit'}
+                onClick={handleTriggerClick}
+                className={`cursor-pointer px-8 py-3 border border-white/30 text-white font-semibold rounded-xl hover:bg-white/10 active:scale-95 active:brightness-125 transition-all ${mangoRunReady ? 'mango-run-trigger' : ''}`}
               >
-                まずは資料請求
+                {mangoRunReady ? 'GO!!!' : 'まずは資料請求'}
               </button>
             </div>
           </form>
         )}
       </div>
+      <MangoRunEasterEgg ref={mangoRunRef} onComplete={handleMangoRunComplete} />
     </section>
   )
 }
@@ -683,7 +693,7 @@ function Footer() {
           <div>
             <h4 className="font-semibold text-sm mb-4 text-white/80">Rendix</h4>
             <ul className="space-y-2 text-sm text-slate-400">
-              {['Rendixとは？', '機能一覧', '料金プラン'].map((l) => (
+              {['Rendixとは？','機能一覧','料金プラン'].map((l) => (
                 <li key={l}><a href="#" className="hover:text-white transition-colors">{l}</a></li>
               ))}
             </ul>
@@ -692,8 +702,8 @@ function Footer() {
             <h4 className="font-semibold text-sm mb-4 text-white/80">会社情報</h4>
             <ul className="space-y-2 text-sm text-slate-400">
               {[
-                { label: '会社概要', href: '#about-goatech' },
-                { label: 'お問い合わせ', href: '#contact' },
+                { label: '会社概要',href: '#about-goatech' },
+                { label: 'お問い合わせ',href: '#contact' },
               ].map((l) => (
                 <li key={l.label}><a href={l.href} className="hover:text-white transition-colors">{l.label}</a></li>
               ))}
