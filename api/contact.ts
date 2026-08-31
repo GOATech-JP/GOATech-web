@@ -153,7 +153,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           to: [CONTACT_EMAIL],
           subject,
           html,
-          headers: { 'Reply-To': email },
+          reply_to: email,
         }),
         signal: controller.signal,
       })
