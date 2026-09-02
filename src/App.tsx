@@ -1,5 +1,8 @@
 import { useState } from 'react'
 import MangoRunEasterEgg,{ useMangoRun } from './components/MangoRunEasterEgg'
+import squareLogo from './imports/SquareLogo_Purple.jpg'
+import footerLogo from './imports/GOATech____.png'
+import goatImage from './imports/ChatGPT_Image_2026_8_23__16_19_59.png'
 
 /* ─── DATA ─────────────────────────────────────────────── */
 const problems = [
@@ -107,7 +110,7 @@ function Navbar() {
       <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
         <a href="#" className="flex items-center">
           <img
-            src="/src/imports/SquareLogo_Purple.jpg"
+            src={squareLogo}
             alt="GOATech"
             className="h-14 w-auto"
           />
@@ -489,7 +492,7 @@ function AboutSection() {
           <div
             className="absolute inset-0 bg-center bg-no-repeat bg-contain"
             style={{
-              backgroundImage: "url('/src/imports/ChatGPT_Image_2026_8_23__16_19_59.png')",
+              backgroundImage: `url('${goatImage}')`,
               opacity: 0.12,
             }}
           />
@@ -608,13 +611,13 @@ function ContactSection() {
 
     try {
       const controller = new AbortController()
-      const timeout = setTimeout(() => controller.abort(), 10000)
+      const timeout = setTimeout(() => controller.abort(),10000)
 
       const apiUrl = import.meta.env.VITE_CONTACT_API_URL || '/api/contact'
-      const resp = await fetch(apiUrl, {
+      const resp = await fetch(apiUrl,{
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...form, hp: '' }),
+        body: JSON.stringify({ ...form,hp: '' }),
         signal: controller.signal,
       })
       clearTimeout(timeout)
@@ -626,7 +629,7 @@ function ContactSection() {
 
       if (resp.status === 400) {
         const data = await resp.json().catch(() => ({}))
-        setErrors({ ...(data.errors || {}), api: data.message || '入力内容に誤りがあります。' })
+        setErrors({ ...(data.errors || {}),api: data.message || '入力内容に誤りがあります。' })
         return
       }
 
@@ -726,13 +729,12 @@ function ContactSection() {
                 type={mangoRunReady ? 'button' : 'submit'}
                 disabled={isSending && !mangoRunReady}
                 onClick={mangoRunReady ? handleTriggerClick : undefined}
-                className={`px-8 py-3 bg-white text-[#3a00d5] font-bold rounded-xl transition-all shadow-lg ${
-                  mangoRunReady
+                className={`px-8 py-3 bg-white text-[#3a00d5] font-bold rounded-xl transition-all shadow-lg ${mangoRunReady
                     ? 'cursor-pointer mango-run-trigger hover:bg-purple-50 active:scale-95 active:brightness-110'
                     : isSending
                       ? 'opacity-60 cursor-not-allowed'
                       : 'cursor-pointer hover:bg-purple-50'
-                }`}
+                  }`}
               >
                 {mangoRunReady ? 'GO!!!' : isSending ? '送信中...' : '送信する'}
               </button>
@@ -754,7 +756,7 @@ function Footer() {
           <div className="md:col-span-2">
             <div className="flex items-center mb-4">
               <img
-                src="/src/imports/GOATech____.png"
+                src={footerLogo}
                 alt="GOATech"
                 className="h-16 w-auto"
               />
