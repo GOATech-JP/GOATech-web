@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import MangoRunEasterEgg,{ useMangoRun } from './components/MangoRunEasterEgg'
 
 /* ─── DATA ─────────────────────────────────────────────── */
 const problems = [
@@ -568,16 +567,82 @@ function AboutSection() {
 function ContactSection() {
   const [form,setForm] = useState({ name: '',company: '',email: '',message: '' })
   const [sent,setSent] = useState(false)
-  const {
-    isReady: mangoRunReady,
-    mangoRunRef,
-    handleTriggerClick,
-    handleComplete: handleMangoRunComplete,
-  } = useMangoRun()
+  const [errors,setErrors] = useState<{ name?: string; email?: string; api?: string }>({})
+  const [isSending,setIsSending] = useState(false)
+  const [lastAttempt,setLastAttempt] = useState(0)
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const validateEmail = (email: string) => {
+    return /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    setSent(true)
+    setErrors({})
+    if (isSending) return
+    const now = Date.now()
+    if (now - lastAttempt < 3000) return
+    setLastAttempt(now)
+
+    // Frontend validation
+    if (!form.name.trim()) {
+      setErrors({ name: 'お名前を入力してください。' })
+      return
+    }
+    if (!form.email.trim()) {
+      setErrors({ email: 'メールアドレスを入力してください。' })
+      return
+    }
+    if (!validateEmail(form.email)) {
+      setErrors({ email: '正しいメールアドレスを入力してください。' })
+      return
+    }
+
+    setIsSending(true)
+
+    try {
+      const controller = new AbortController()
+      const timeout = setTimeout(() => controller.abort(), 10000)
+
+      const apiUrl = import.meta.env.VITE_CONTACT_API_URL || '/api/contact'
+      const resp = await fetch(apiUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...form, hp: '' }),
+        signal: controller.signal,
+      })
+      clearTimeout(timeout)
+
+      if (resp.status === 200) {
+        setSent(true)
+        return
+      }
+
+      if (resp.status === 400) {
+        const data = await resp.json().catch(() => ({}))
+        setErrors({ ...(data.errors || {}), api: data.message || '入力内容に誤りがあります。' })
+        return
+      }
+
+      if (resp.status === 429) {
+        setErrors({ api: '短時間に送信が集中しています。\nしばらく時間をおいてから再度お試しください。' })
+        return
+      }
+
+      if (resp.status >= 500) {
+        setErrors({ api: '現在お問い合わせフォームを利用できません。\nお手数ですが、時間をおいて再度お試しください。' })
+        return
+      }
+
+      setErrors({ api: '送信に失敗しました。時間をおいて再度お試しください。' })
+    } catch (err) {
+      if ((err as any)?.name === 'AbortError') {
+        setErrors({ api: '送信に時間がかかりすぎています。時間をおいて再度お試しください。' })
+      } else {
+        setErrors({ api: '送信に失敗しました。時間をおいて再度お試しください。' })
+      }
+    } finally {
+      setIsSending(false)
+    }
   }
 
   return (
@@ -614,6 +679,7 @@ function ContactSection() {
                   onChange={(e) => setForm({ ...form,name: e.target.value })}
                   className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-white/30 text-sm focus:outline-none focus:border-white/50 transition-colors"
                 />
+                {errors.name && <div className="text-xs text-yellow-300 mt-2">{errors.name}</div>}
               </div>
               <div>
                 <label className="block text-sm font-semibold text-white/80 mb-2">会社名</label>
@@ -636,6 +702,7 @@ function ContactSection() {
                 onChange={(e) => setForm({ ...form,email: e.target.value })}
                 className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-white/30 text-sm focus:outline-none focus:border-white/50 transition-colors"
               />
+              {errors.email && <div className="text-xs text-yellow-300 mt-2">{errors.email}</div>}
             </div>
             <div className="mb-6">
               <label className="block text-sm font-semibold text-white/80 mb-2">お問い合わせ内容</label>
@@ -647,26 +714,19 @@ function ContactSection() {
                 className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-white/30 text-sm focus:outline-none focus:border-white/50 transition-colors resize-none"
               />
             </div>
-            <div className="flex flex-wrap gap-4">
+            <div className="flex flex-wrap gap-4 items-center">
               <button
-                type={mangoRunReady ? 'button' : 'submit'}
-                onClick={handleTriggerClick}
-                className={`cursor-pointer px-8 py-3 bg-white text-[#3a00d5] font-bold rounded-xl hover:bg-purple-50 active:scale-95 active:brightness-110 transition-all shadow-lg ${mangoRunReady ? 'mango-run-trigger' : ''}`}
+                type="submit"
+                disabled={isSending}
+                className={`px-8 py-3 bg-white text-[#3a00d5] font-bold rounded-xl ${isSending ? 'opacity-60 cursor-not-allowed' : 'hover:bg-purple-50'} transition-all shadow-lg`}
               >
-                {mangoRunReady ? 'GO!!!' : '送信する'}
+                {isSending ? '送信中...' : '送信する'}
               </button>
-              <button
-                type={mangoRunReady ? 'button' : 'submit'}
-                onClick={handleTriggerClick}
-                className={`cursor-pointer px-8 py-3 border border-white/30 text-white font-semibold rounded-xl hover:bg-white/10 active:scale-95 active:brightness-125 transition-all ${mangoRunReady ? 'mango-run-trigger' : ''}`}
-              >
-                {mangoRunReady ? 'GO!!!' : 'まずは資料請求'}
-              </button>
+              {errors.api && <div className="text-sm text-yellow-300">{errors.api}</div>}
             </div>
           </form>
         )}
       </div>
-      <MangoRunEasterEgg ref={mangoRunRef} onComplete={handleMangoRunComplete} />
     </section>
   )
 }
