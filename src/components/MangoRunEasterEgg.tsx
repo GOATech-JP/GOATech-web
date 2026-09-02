@@ -89,33 +89,68 @@ export function useMangoRun() {
   const commandProgressRef = useRef(0)
 
   const handleKeyDown = useCallback((e: KeyboardEvent) => {
-    const target = e.target
-    if (target instanceof HTMLElement && target.closest('input, textarea, select, [contenteditable="true"]')) return
-    if (e.key === EASTER_EGG_COMMAND[commandProgressRef.current]) {
-      commandProgressRef.current += 1
-      if (commandProgressRef.current === EASTER_EGG_COMMAND.length) setIsReady(true)
+    if (e.ctrlKey || e.altKey || e.metaKey) {
       return
     }
-    commandProgressRef.current = 0
+
+    const expectedKey =
+      EASTER_EGG_COMMAND[commandProgressRef.current]
+
+    if (e.key === expectedKey) {
+      e.preventDefault()
+
+      commandProgressRef.current += 1
+
+      if (
+        commandProgressRef.current ===
+        EASTER_EGG_COMMAND.length
+      ) {
+        commandProgressRef.current = 0
+        setIsReady(true)
+      }
+
+      return
+    }
+    commandProgressRef.current =
+      e.key === EASTER_EGG_COMMAND[0] ? 1 : 0
   },[])
 
   useEffect(() => {
-    document.addEventListener('keydown',handleKeyDown)
-    return () => document.removeEventListener('keydown',handleKeyDown)
+    // capture=true にして、他コンポーネントより先に拾う
+    window.addEventListener('keydown',handleKeyDown,{
+      capture: true,
+    })
+
+    return () => {
+      window.removeEventListener('keydown',handleKeyDown,{
+        capture: true,
+      })
+    }
   },[handleKeyDown])
 
-  const handleTriggerClick = useCallback((e: ReactMouseEvent<HTMLButtonElement>) => {
-    if (!isReady) return
-    e.preventDefault()
-    mangoRunRef.current?.start()
-  },[isReady])
+  const handleTriggerClick = useCallback(
+    (e: ReactMouseEvent<HTMLButtonElement>) => {
+      if (!isReady) {
+        return
+      }
+
+      e.preventDefault()
+      mangoRunRef.current?.start()
+    },
+    [isReady],
+  )
 
   const handleComplete = useCallback(() => {
     commandProgressRef.current = 0
     setIsReady(false)
   },[])
 
-  return { isReady,mangoRunRef,handleKeyDown,handleTriggerClick,handleComplete }
+  return {
+    isReady,
+    mangoRunRef,
+    handleTriggerClick,
+    handleComplete,
+  }
 }
 
 function interpolate(start: number,end: number,progress: number) {
