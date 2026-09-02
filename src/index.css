@@ -2,44 +2,113 @@
 @import 'tailwindcss';
 
 @theme inline {
-  --color-background: #ffffff;
-  --color-foreground: #0f1f3d;
-  --color-card: #f8faff;
-  --color-card-foreground: #0f1f3d;
-  --color-primary: #3a00d5;
-  --color-primary-foreground: #ffffff;
-  --color-secondary: #f3f0ff;
-  --color-secondary-foreground: #3a00d5;
-  --color-muted: #f1f5f9;
-  --color-muted-foreground: #64748b;
-  --color-accent: #6b3ff7;
-  --color-accent-foreground: #ffffff;
-  --color-border: #e2e8f0;
-  --color-ring: #3a00d5;
-  --radius: 8px;
+	--color-background: #ffffff;
+	--color-foreground: #0f1f3d;
+	--color-card: #f8faff;
+	--color-card-foreground: #0f1f3d;
+	--color-primary: #3a00d5;
+	--color-primary-foreground: #ffffff;
+	--color-secondary: #f3f0ff;
+	--color-secondary-foreground: #3a00d5;
+	--color-muted: #f1f5f9;
+	--color-muted-foreground: #64748b;
+	--color-accent: #6b3ff7;
+	--color-accent-foreground: #ffffff;
+	--color-border: #e2e8f0;
+	--color-ring: #3a00d5;
+	--radius: 8px;
 }
 
 * {
-  font-family: 'Noto Sans JP', 'DM Sans', sans-serif;
+	font-family: 'Noto Sans JP', 'DM Sans', sans-serif;
 }
 
 html {
-  scroll-behavior: smooth;
-  scroll-padding-top: 64px;
+	scroll-behavior: smooth;
+	scroll-padding-top: 64px;
 }
 
 body {
-  background-color: #ffffff;
-  color: #0f1f3d;
+	background-color: #ffffff;
+	color: #0f1f3d;
+}
+
+.mango-run-trigger {
+	animation: mango-run-trigger 1.2s ease-in-out infinite;
+}
+
+.mango-runner {
+	position: absolute;
+	inset-block-start: 0;
+	inset-inline-start: 0;
+	pointer-events: none;
+	will-change: transform;
+}
+
+#mango-easter-egg {
+	position: fixed;
+	inset: 0;
+	overflow: hidden;
+	z-index: 99999;
+	pointer-events: none;
+}
+
+.mango-sprite {
+	inline-size: 100%;
+	block-size: 100%;
+}
+
+.mango-sprite__image {
+	display: block;
+	inline-size: 100%;
+	block-size: 100%;
+	object-fit: contain;
+	animation: mango-run-bounce 125ms ease-in-out infinite alternate;
+}
+
+.mango-sprite__image.is-frozen {
+	animation: none;
+}
+
+@keyframes mango-run-trigger {
+
+	0%,
+	100% {
+		box-shadow: 0 0 0 0 rgb(255 255 255 / 0.2), 0 0 12px rgb(255 255 255 / 0.45);
+	}
+
+	50% {
+		box-shadow: 0 0 0 6px rgb(255 255 255 / 0.08), 0 0 28px rgb(255 255 255 / 0.9);
+	}
+}
+
+@keyframes mango-run-bounce {
+	from {
+		transform: translateY(-5px);
+	}
+
+	to {
+		transform: translateY(5px) rotate(2deg);
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+	.mango-run-trigger,
+	.mango-sprite__image {
+		animation: none;
+	}
 }
 
 ::-webkit-scrollbar {
-  width: 4px;
+	inline-size: 4px;
 }
+
 ::-webkit-scrollbar-track {
-  background: transparent;
+	background: transparent;
 }
+
 ::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
-  border-radius: 2px;
+	background: #cbd5e1;
+	border-radius: 2px;
 }
