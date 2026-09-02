@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import MangoRunEasterEgg,{ useMangoRun } from './components/MangoRunEasterEgg'
 
 /* ─── DATA ─────────────────────────────────────────────── */
 const problems = [
@@ -570,6 +571,12 @@ function ContactSection() {
   const [errors,setErrors] = useState<{ name?: string; email?: string; api?: string }>({})
   const [isSending,setIsSending] = useState(false)
   const [lastAttempt,setLastAttempt] = useState(0)
+  const {
+    isReady: mangoRunReady,
+    mangoRunRef,
+    handleTriggerClick,
+    handleComplete: handleMangoRunComplete,
+  } = useMangoRun()
 
   const validateEmail = (email: string) => {
     return /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)
@@ -716,17 +723,25 @@ function ContactSection() {
             </div>
             <div className="flex flex-wrap gap-4 items-center">
               <button
-                type="submit"
-                disabled={isSending}
-                className={`px-8 py-3 bg-white text-[#3a00d5] font-bold rounded-xl ${isSending ? 'opacity-60 cursor-not-allowed' : 'hover:bg-purple-50'} transition-all shadow-lg`}
+                type={mangoRunReady ? 'button' : 'submit'}
+                disabled={isSending && !mangoRunReady}
+                onClick={mangoRunReady ? handleTriggerClick : undefined}
+                className={`px-8 py-3 bg-white text-[#3a00d5] font-bold rounded-xl transition-all shadow-lg ${
+                  mangoRunReady
+                    ? 'cursor-pointer mango-run-trigger hover:bg-purple-50 active:scale-95 active:brightness-110'
+                    : isSending
+                      ? 'opacity-60 cursor-not-allowed'
+                      : 'cursor-pointer hover:bg-purple-50'
+                }`}
               >
-                {isSending ? '送信中...' : '送信する'}
+                {mangoRunReady ? 'GO!!!' : isSending ? '送信中...' : '送信する'}
               </button>
               {errors.api && <div className="text-sm text-yellow-300">{errors.api}</div>}
             </div>
           </form>
         )}
       </div>
+      <MangoRunEasterEgg ref={mangoRunRef} onComplete={handleMangoRunComplete} />
     </section>
   )
 }
