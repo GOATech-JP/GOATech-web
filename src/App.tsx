@@ -110,10 +110,10 @@ function Navbar() {
       <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
         <a href="#" className="flex items-center">
           <img
-            src={squareLogo}
+            src="/src/imports/GOATech-logo-transparent.png"
             alt="GOATech"
-            className="h-14 w-auto"
-          />
+            className="h-15 w-auto"
+/>
         </a>
 
         {/* Desktop */}
