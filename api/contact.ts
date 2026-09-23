@@ -168,6 +168,37 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         return
       }
 
+      const completionHtml = `
+        <div>
+          <p>お問い合わせを受け付けました。</p>
+          <p>ご記載いただいたメールアドレス（${escapeHtml(String(email))}）宛にお問い合わせ完了メールを送付いたしました。</p>
+          <hr />
+          <p><strong>お問い合わせ内容の概要</strong></p>
+          <p><strong>お名前</strong><br/>${safeName}</p>
+          <p><strong>会社名</strong><br/>${safeCompany || '（未入力）'}</p>
+          <p><strong>お問い合わせ内容</strong><br/>${safeMessage || '（未入力）'}</p>
+        </div>
+      `
+
+      try {
+        await fetch('https://api.resend.com/emails', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${RESEND_API_KEY}`,
+          },
+          body: JSON.stringify({
+            from: MAIL_FROM,
+            to: [email],
+            subject: '【Rendix】お問い合わせ受付完了',
+            html: completionHtml,
+            reply_to: CONTACT_EMAIL,
+          }),
+        })
+      } catch {
+        // Best-effort delivery to the sender. Keep the lead notification successful.
+      }
+
       res.status(200).json({ message: 'ok' })
     } catch (err) {
       if ((err as any)?.name === 'AbortError') {

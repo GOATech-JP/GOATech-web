@@ -3,6 +3,7 @@ import MangoRunEasterEgg,{ useMangoRun } from './components/MangoRunEasterEgg'
 import squareLogo from './imports/SquareLogo_Purple.jpg'
 import footerLogo from './imports/GOATech____.png'
 import goatImage from './imports/ChatGPT_Image_2026_8_23__16_19_59.png'
+import goatLogo from './imports/GOATech-logo-transparent.png'
 
 /* ─── DATA ─────────────────────────────────────────────── */
 const problems = [
@@ -112,10 +113,10 @@ function Navbar() {
       <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
         <a href="#" className="flex items-center">
           <img
-            src="/src/imports/GOATech-logo-transparent.png"
+            src={goatLogo}
             alt="GOATech"
             className="h-15 w-auto"
-/>
+          />
         </a>
 
         {/* Desktop */}
@@ -550,6 +551,7 @@ function AboutSection() {
 function ContactSection() {
   const [form,setForm] = useState({ name: '',company: '',email: '',message: '' })
   const [sent,setSent] = useState(false)
+  const [submittedEmail,setSubmittedEmail] = useState('')
   const [errors,setErrors] = useState<{ name?: string; email?: string; api?: string }>({})
   const [isSending,setIsSending] = useState(false)
   const [lastAttempt,setLastAttempt] = useState(0)
@@ -602,6 +604,7 @@ function ContactSection() {
       clearTimeout(timeout)
 
       if (resp.status === 200) {
+        setSubmittedEmail(form.email.trim())
         setSent(true)
         return
       }
@@ -654,6 +657,9 @@ function ContactSection() {
           <div className="text-center py-16">
             <div className="text-5xl mb-6">✅</div>
             <h3 className="text-2xl font-bold mb-3">お送りいただきありがとうございます！</h3>
+            <p className="text-purple-200 text-sm mb-3">
+              ご記載いただいたメールアドレス（{submittedEmail}）宛に、お問い合わせ完了メールを送付いたしました。
+            </p>
             <p className="text-purple-200 text-sm">担当者より2営業日以内にご連絡いたします。</p>
           </div>
         ) : (
