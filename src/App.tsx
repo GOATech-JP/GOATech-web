@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import MangoRunEasterEgg,{ useMangoRun } from './components/MangoRunEasterEgg'
 import squareLogo from './imports/SquareLogo_Purple.jpg'
 import footerLogo from './imports/GOATech____.png'
@@ -95,11 +95,13 @@ const companyInfo = [
 /* ─── COMPONENTS ────────────────────────────────────────── */
 
 const navLinks = [
-  { label: '会社概要',href: '#about-goatech' },
-  { label: 'Rendixとは？',href: '#rendix' },
-  { label: '料金プラン',href: '#price' },
-  { label: 'よくある質問',href: '#faq' },
-  { label: 'お問い合わせ',href: '#contact' },
+  { label: 'Rendixとは？', href: '#rendix' },
+  { label: '課題解決', href: '#problem' },
+  { label: '私たちの強み', href: '#strength' },
+  { label: '導入フロー', href: '#flow' },
+  { label: '料金', href: '#price' },
+  { label: 'FAQ', href: '#faq' },
+  { label: '会社概要', href: '#about-goatech' },
 ]
 
 function Navbar() {
@@ -127,7 +129,7 @@ function Navbar() {
             href="#contact"
             className="ml-2 px-4 py-2 bg-[#3a00d5] text-white text-sm font-semibold rounded-lg hover:bg-[#2d00a8] transition-colors"
           >
-            資料請求
+            お問い合わせ
           </a>
         </div>
 
@@ -179,20 +181,6 @@ function Hero() {
             レンタルショップの業務をRendixひとつで完結。<br />
             現場目線で設計されたSaaSで、業務効率を劇的に改善します。
           </p>
-          <div className="flex flex-wrap gap-3">
-            <a
-              href="#contact"
-              className="px-6 py-3 bg-[#3a00d5] text-white font-semibold rounded-xl hover:bg-[#2d00a8] transition-all shadow-lg shadow-purple-200 hover:shadow-xl hover:shadow-purple-300 hover:-translate-y-0.5"
-            >
-              無料で資料請求する
-            </a>
-            <a
-              href="#rendix"
-              className="px-6 py-3 border border-slate-200 text-slate-700 font-semibold rounded-xl hover:border-[#3a00d5] hover:text-[#3a00d5] transition-colors"
-            >
-              まず詳細を見る
-            </a>
-          </div>
         </div>
 
         <div className="relative">
@@ -209,7 +197,7 @@ function Hero() {
       {/* Before / After */}
       <div className="max-w-4xl mx-auto px-6 mt-16">
         <div className="grid md:grid-cols-2 gap-6">
-          <div className="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm">
+          <div className="group bg-white rounded-2xl p-6 border border-slate-100 shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:shadow-slate-200/70">
             <div className="flex items-center gap-2 mb-4">
               <span className="bg-slate-100 text-slate-500 text-xs font-bold px-2.5 py-1 rounded-full">Before</span>
               <span className="text-slate-500 text-sm">旧・ExcelやPOS管理</span>
@@ -222,7 +210,7 @@ function Hero() {
               ))}
             </ul>
           </div>
-          <div className="bg-gradient-to-br from-[#3a00d5] to-[#6b3ff7] rounded-2xl p-6 shadow-lg shadow-purple-200">
+          <div className="group bg-gradient-to-br from-[#3a00d5] to-[#6b3ff7] rounded-2xl p-6 shadow-lg shadow-purple-200 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:shadow-purple-300/60">
             <div className="flex items-center gap-2 mb-4">
               <span className="bg-white/20 text-white text-xs font-bold px-2.5 py-1 rounded-full">After</span>
               <span className="text-purple-100 text-sm">Rendixで一元管理</span>
@@ -250,9 +238,9 @@ function WhatIsRendix() {
           レンタルショップに特化した<br />業務管理SaaS
         </h2>
         <p className="text-slate-600 leading-relaxed text-base max-w-2xl mx-auto mb-12">
-          Rendix（レンディクス）は、レンタルショップの業務を一元化する次世代の業務管理システムです。
-          予約・受付・貸出・返却・請求・在庫管理・売上分析・顧客管理のすべてを
-          レンタルショップのDXを実現し、迅速な変化の波を乗り越えるための武器となります。
+          Rendixは、レンタルショップの業務を一元化する次世代の業務管理システムです。<br />
+          予約・受付・貸出・返却・請求・在庫管理・売上分析・顧客管理のすべてをレンタルショップのDXを実現し、<br />
+          迅速な変化の波を乗り越えるための武器となります。
         </p>
       </div>
     </section>
@@ -261,10 +249,10 @@ function WhatIsRendix() {
 
 function ProblemSection() {
   return (
-    <section className="py-20 bg-[#f8f5ff]">
+    <section id="problem" className="py-20 bg-[#f8f5ff]">
       <div className="max-w-6xl mx-auto px-6">
         <div className="text-center mb-14">
-          <SectionLabel>Problem</SectionLabel>
+          <SectionLabel>課題解決</SectionLabel>
           <h2 className="text-3xl md:text-4xl font-bold text-[#0f1f3d] mb-4">主な悩みと課題</h2>
           <p className="text-slate-500 text-sm">
             こんなお悩みはありませんか？
@@ -325,23 +313,16 @@ function SolutionSection() {
         </div>
 
         <div className="mt-14 bg-gradient-to-r from-[#3a00d5] to-[#6b3ff7] rounded-2xl p-8 md:p-12 text-white text-center shadow-xl shadow-purple-200">
-          <p className="text-purple-100 text-sm mb-3 font-medium">導入実績多数</p>
           <h3 className="text-2xl md:text-3xl font-bold mb-4">レンタル業務を、もっとシンプルに。</h3>
           <p className="text-purple-100 text-sm mb-8 max-w-lg mx-auto">
             Rendixを実際に試してみませんか？まずは資料請求からお気軽にどうぞ。
           </p>
-          <div className="flex flex-wrap gap-4 justify-center">
+          <div className="flex justify-center">
             <a
               href="#contact"
-              className="px-6 py-3 bg-white text-[#3a00d5] font-bold rounded-xl hover:bg-purple-50 transition-colors shadow"
+              className="px-6 py-3 bg-white text-[#3a00d5] font-bold rounded-xl shadow transition-all duration-300 hover:-translate-y-1 hover:bg-purple-50 hover:shadow-xl hover:shadow-purple-300/40"
             >
               無料で資料請求する
-            </a>
-            <a
-              href="#contact"
-              className="px-6 py-3 border border-white/40 text-white font-semibold rounded-xl hover:bg-white/10 transition-colors"
-            >
-              まずは無料相談
             </a>
           </div>
         </div>
@@ -352,10 +333,10 @@ function SolutionSection() {
 
 function StrengthSection() {
   return (
-    <section className="py-20 bg-[#f8f5ff]">
+    <section id="strength" className="py-20 bg-[#f8f5ff]">
       <div className="max-w-6xl mx-auto px-6">
         <div className="text-center mb-14">
-          <SectionLabel>Our Strength</SectionLabel>
+          <SectionLabel>私たちの強み</SectionLabel>
           <h2 className="text-3xl md:text-4xl font-bold text-[#0f1f3d] mb-4">私たちの強み</h2>
         </div>
         <div className="space-y-8">
@@ -384,7 +365,7 @@ function StrengthSection() {
 
 function FlowSection() {
   return (
-    <section className="py-20 bg-white">
+    <section id="flow" className="py-20 bg-white">
       <div className="max-w-6xl mx-auto px-6">
         <div className="text-center mb-14">
           <SectionLabel>Flow</SectionLabel>
@@ -550,15 +531,13 @@ function AboutSection() {
           </div>
         </div>
 
-        <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
-          <div className="px-6 py-4 bg-[#f3f0ff] border-b border-slate-100">
-            <h3 className="font-bold text-[#0f1f3d] text-sm">会社概要</h3>
-          </div>
-          <div className="divide-y divide-slate-50">
+        <div>
+          <h3 className="font-bold text-[#0f1f3d] text-sm mb-4">会社概要</h3>
+          <div>
             {companyInfo.map((row) => (
-              <div key={row.label} className="grid grid-cols-3 px-6 py-4">
+              <div key={row.label} className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-6 px-2 py-4 border-t border-[#3a00d5]/15 last:border-b">
                 <div className="text-slate-500 text-sm font-medium">{row.label}</div>
-                <div className="col-span-2 text-[#0f1f3d] text-sm">{row.value}</div>
+                <div className="sm:col-span-2 text-[#0f1f3d] text-sm">{row.value}</div>
               </div>
             ))}
           </div>
@@ -666,7 +645,8 @@ function ContactSection() {
           </div>
           <h2 className="text-3xl md:text-4xl font-bold mb-4">お問い合わせ・資料請求</h2>
           <p className="text-purple-200 text-sm max-w-lg mx-auto">
-            Rendixにご興味をお持ちの方は、お気軽にご連絡ください。専任担当者よりご連絡いたします。
+            Rendixにご興味をお持ちの方は、お気軽にご連絡ください。<br />
+            専任担当者よりご連絡いたします。
           </p>
         </div>
 
@@ -748,6 +728,45 @@ function ContactSection() {
   )
 }
 
+function PageTopButton() {
+  const [isAtBottom, setIsAtBottom] = useState(false)
+
+  useEffect(() => {
+    const updateVisibility = () => {
+      const documentElement = document.documentElement
+      const isBottom = window.scrollY + window.innerHeight >= documentElement.scrollHeight - 8
+      setIsAtBottom(isBottom)
+    }
+
+    updateVisibility()
+    window.addEventListener('scroll', updateVisibility, { passive: true })
+    window.addEventListener('resize', updateVisibility)
+
+    return () => {
+      window.removeEventListener('scroll', updateVisibility)
+      window.removeEventListener('resize', updateVisibility)
+    }
+  }, [])
+
+  const handleClick = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
+  return (
+    <div className={`fixed bottom-5 right-5 z-50 transition-opacity ${isAtBottom ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
+      <button
+        type="button"
+        onClick={handleClick}
+        className="inline-flex items-center justify-center gap-1.5 px-2.5 py-2 rounded-md border border-white bg-transparent text-white text-xs font-normal leading-none transition-colors hover:bg-white/5"
+        aria-label="ページトップへ戻る"
+      >
+        <span className="text-sm leading-none">↖︎</span>
+        <span>ページトップ</span>
+      </button>
+    </div>
+  )
+}
+
 function Footer() {
   return (
     <footer className="bg-[#0a1628] text-white py-12">
@@ -788,16 +807,8 @@ function Footer() {
           </div>
         </div>
         <div className="border-t border-white/10 pt-6">
-          <div className="flex flex-wrap items-center gap-4 justify-between">
+          <div className="flex flex-wrap items-center justify-between">
             <p className="text-slate-500 text-xs">Rendix — レンタル業務をシンプルに。</p>
-            <div className="flex gap-4">
-              <a href="#contact" className="px-4 py-2 bg-[#3a00d5] text-white text-xs font-semibold rounded-lg hover:bg-[#2d00a8] transition-colors">
-                無料で資料請求する
-              </a>
-              <a href="#contact" className="px-4 py-2 border border-white/20 text-white text-xs font-semibold rounded-lg hover:bg-white/10 transition-colors">
-                お問い合わせ
-              </a>
-            </div>
           </div>
         </div>
       </div>
@@ -821,6 +832,7 @@ export default function App() {
       <AboutSection />
       <ContactSection />
       <Footer />
+      <PageTopButton />
     </div>
   )
 }
