@@ -1041,16 +1041,18 @@ export default function App() {
   return (
     <div className="min-h-screen">
       <Navbar />
-      <Hero />
-      <WhatIsRendix />
-      <ProblemSection />
-      <SolutionSection />
-      <StrengthSection />
-      <FlowSection />
-      <PriceSection />
-      <FAQSection />
-      <AboutSection />
-      <ContactSection />
+      <main>
+        <Hero />
+        <WhatIsRendix />
+        <ProblemSection />
+        <SolutionSection />
+        <StrengthSection />
+        <FlowSection />
+        <PriceSection />
+        <FAQSection />
+        <AboutSection />
+        <ContactSection />
+      </main>
       <Footer />
       <PageTopButton />
     </div>
