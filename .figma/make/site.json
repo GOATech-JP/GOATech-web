@@ -1,7 +1,14 @@
 {
-  "description": "Creates a professional landing page showcasing Rendix products for GOATech, enhancing brand presence and engaging potential customers effectively.",
+  "title": "GOATech | レンタル業務を、もっとシンプルに。",
+  "description": "Rendixは、予約・受付・貸出・返却・請求・在庫管理まで、レンタルショップの業務を一元化する業務管理SaaSです。",
   "robots": {
-    "index": false
+    "index": true
+  },
+  "icons": {
+    "icon": "/favicon.svg"
+  },
+  "openGraph": {
+    "image": "https://goatech.jp/favicon.svg"
   },
   "accessibility": {
     "addBypassLinks": false,
