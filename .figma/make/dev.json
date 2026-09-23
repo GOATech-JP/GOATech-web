@@ -13,10 +13,7 @@
   // NOT application source files. Vite's dev server already watches
   // application code (src/**/*) and config (vite.config.ts) via its own HMR
   // pipeline, so including them here would cause a redundant full restart.
-  "installOn": [
-    "package.json",
-    "pnpm-lock.yaml"
-  ],
+  "installOn": ["package.json", "pnpm-lock.yaml"],
   // Files whose changes trigger only a dev server restart (no install).
   "restartOn": []
 }
