@@ -1,4 +1,5 @@
-import { defineConfig, type HtmlTagDescriptor, type Plugin } from "vite";
+import { defineConfig } from "vite";
+import type { HtmlTagDescriptor, Plugin } from "vite";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import path from "node:path";
@@ -260,19 +261,21 @@ function figmaErrorOverlayReplay(): Plugin {
     configureServer(server) {
       let lastError: object | null = null;
 
-      const origSend = server.ws.send.bind(server.ws) as (...args: any[]) => void;
-      server.ws.send = ((...args: any[]) => {
-        const payload = args[0];
-        if (payload && typeof payload === "object" && !Array.isArray(payload)) {
-          const type = (payload as { type?: string }).type;
-          if (type === "error") {
-            lastError = payload as object;
-          } else if (type === "update" || type === "full-reload") {
-            lastError = null;
+      const origSend = server.ws.send.bind(server.ws);
+      Object.defineProperty(server.ws, "send", {
+        value: (...args: unknown[]) => {
+          const payload = args.length === 1 ? args[0] : args[1];
+          if (isRecord(payload)) {
+            const type = typeof payload.type === "string" ? payload.type : undefined;
+            if (type === "error") {
+              lastError = payload;
+            } else if (type === "update" || type === "full-reload") {
+              lastError = null;
+            }
           }
-        }
-        return origSend(...args);
-      }) as typeof server.ws.send;
+          return Reflect.apply(origSend, server.ws, args);
+        },
+      });
 
       server.ws.on("connection", (socket) => {
         if (lastError !== null) {
@@ -281,6 +284,10 @@ function figmaErrorOverlayReplay(): Plugin {
       });
     },
   };
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
 }
 
 /**
@@ -377,8 +384,8 @@ function figmaMakeKitPlugin(options: { storiesGlob: string | string[] }): Plugin
         try {
           res.setHeader("Content-Type", "text/html");
           res.end(await server.transformIndexHtml(url, HTML_BOOTSTRAP));
-        } catch (err) {
-          next(err as Error);
+        } catch (error) {
+          next(error instanceof Error ? error : new Error(String(error)));
         }
       });
     },

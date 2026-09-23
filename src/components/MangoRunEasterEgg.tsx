@@ -7,13 +7,13 @@ import {
   useState,
   type MouseEvent as ReactMouseEvent,
 } from "react";
-import mangoRun01 from "../imports/mango/mango-run-01.png";
-import mangoRun02 from "../imports/mango/mango-run-02.png";
-import mangoRun03 from "../imports/mango/mango-run-03.png";
-import mangoRun04 from "../imports/mango/mango-run-04.png";
-import mangoRun05 from "../imports/mango/mango-run-05.png";
-import mangoRun06 from "../imports/mango/mango-run-06.png";
-import mangoRunAudio from "../imports/mango-run.mp3";
+import mangoRun01 from "../imports/mango-run/mango-run-01.png";
+import mangoRun02 from "../imports/mango-run/mango-run-02.png";
+import mangoRun03 from "../imports/mango-run/mango-run-03.png";
+import mangoRun04 from "../imports/mango-run/mango-run-04.png";
+import mangoRun05 from "../imports/mango-run/mango-run-05.png";
+import mangoRun06 from "../imports/mango-run/mango-run-06.png";
+import mangoRunAudio from "../imports/mango-run-audio.mp3";
 
 const BPM = 162;
 const COUNT_DURATION = 60000 / BPM;

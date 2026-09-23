@@ -1,9 +1,26 @@
 import { useEffect, useState } from "react";
+import type { FormEvent } from "react";
+import { z } from "zod";
 import MangoRunEasterEgg, { useMangoRun } from "./components/MangoRunEasterEgg";
-import squareLogo from "./imports/SquareLogo_Purple.jpg";
-import footerLogo from "./imports/GOATech____.png";
-import goatImage from "./imports/ChatGPT_Image_2026_8_23__16_19_59.png";
-import goatLogo from "./imports/GOATech-logo-transparent.png";
+import footerLogo from "./imports/goatech-footer-logo.png";
+import goatImage from "./imports/goatech-mission-vision-value.png";
+import goatLogo from "./imports/goatech-logo.png";
+
+const contactErrorResponseSchema = z.object({
+  message: z.string().optional(),
+  errors: z
+    .object({
+      name: z.string().optional(),
+      email: z.string().optional(),
+    })
+    .optional(),
+});
+
+function hasErrorName(error: unknown): error is { name: string } {
+  return (
+    typeof error === "object" && error !== null && "name" in error && typeof error.name === "string"
+  );
+}
 
 /* ─── DATA ─────────────────────────────────────────────── */
 const problems = [
@@ -209,14 +226,14 @@ function Navbar() {
   const [open, setOpen] = useState(false);
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-100">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-100">
       <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-        <a href="#" className="flex items-center">
+        <a href="#" className="flex shrink-0 items-center">
           <img src={goatLogo} alt="GOATech" className="h-15 w-auto" />
         </a>
 
         {/* Desktop */}
-        <div className="hidden md:flex items-center gap-6">
+        <div className="hidden min-[1200px]:flex items-center gap-6">
           {navLinks.map((l) => (
             <a
               key={l.label}
@@ -235,7 +252,7 @@ function Navbar() {
         </div>
 
         {/* Mobile hamburger */}
-        <button className="md:hidden p-2" onClick={() => setOpen(!open)}>
+        <button className="min-[1200px]:hidden p-2" onClick={() => setOpen(!open)}>
           <div className="w-5 h-0.5 bg-slate-700 mb-1" />
           <div className="w-5 h-0.5 bg-slate-700 mb-1" />
           <div className="w-5 h-0.5 bg-slate-700" />
@@ -243,7 +260,7 @@ function Navbar() {
       </div>
 
       {open && (
-        <div className="md:hidden bg-white border-t border-slate-100 px-6 py-4 flex flex-col gap-4">
+        <div className="min-[1200px]:hidden bg-white/95 border-t border-slate-100 px-6 py-4 flex flex-col gap-4">
           {navLinks.map((l) => (
             <a
               key={l.label}
@@ -281,36 +298,38 @@ function SectionLabel({ children }: { children: string }) {
 
 function Hero() {
   return (
-    <section className="pt-28 pb-20 bg-gradient-to-br from-[#f8f5ff] via-white to-[#f3f0ff] overflow-hidden">
-      <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
-        <div>
-          <h1 className="text-4xl md:text-5xl font-bold text-[#0f1f3d] leading-tight mb-6">
-            レンタル業務を、
-            <br />
-            <span className="text-[#3a00d5]">もっとシンプルに。</span>
-          </h1>
-          <p className="text-slate-600 text-base leading-relaxed mb-8">
-            予約・受付・貸出・返却・請求・在庫管理まで、
-            <br />
-            レンタルショップの業務をRendixひとつで完結。
-            <br />
-            現場目線で設計されたSaaSで、業務効率を劇的に改善します。
-          </p>
+    <section className="bg-[#f8f5ff] pb-24 overflow-hidden">
+      <div className="relative flex flex-col lg:block">
+        <div className="relative order-1 aspect-[1365/768] w-full overflow-hidden lg:min-h-[min(56.25vw,720px)]">
+          <img
+            src="/hero-rental-dashboard.png"
+            alt="レンタルショップ向けRendixの管理画面"
+            className="absolute inset-0 h-full w-full object-cover object-center"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-white/90 via-white/35 to-transparent lg:from-white/85 lg:via-white/15" />
+          <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-b from-transparent via-transparent via-35% via-[#f8f5ff]/15 via-65% to-[#f8f5ff] backdrop-blur-[1px]" />
         </div>
 
-        <div className="relative">
-          <div className="rounded-2xl overflow-hidden shadow-2xl shadow-blue-100 ring-1 ring-slate-100">
-            <img
-              src="https://images.unsplash.com/photo-1553413077-190dd305871c?w=700&h=480&fit=crop&auto=format"
-              alt="レンタル業務の現場"
-              className="w-full h-72 object-cover"
-            />
+        <div className="relative z-10 order-2 bg-[#f8f5ff] px-6 py-10 lg:absolute lg:inset-y-0 lg:left-0 lg:flex lg:w-1/2 lg:items-start lg:bg-transparent lg:px-[max(1.5rem,calc((100vw-72rem)/2))] lg:py-24">
+          <div className="max-w-xl">
+            <h1 className="mb-6 text-4xl font-bold leading-tight text-[#0f1f3d] md:text-5xl">
+              レンタル業務を、
+              <br />
+              <span className="text-[#3a00d5]">もっとシンプルに。</span>
+            </h1>
+            <p className="text-base leading-relaxed text-slate-600">
+              予約・受付・貸出・返却・請求・在庫管理まで、
+              <br />
+              レンタルショップの業務をRendixひとつで完結。
+              <br />
+              現場目線で設計されたSaaSで、業務効率を劇的に改善します。
+            </p>
           </div>
         </div>
       </div>
 
       {/* Before / After */}
-      <div className="max-w-4xl mx-auto px-6 mt-16">
+      <div className="mx-auto mt-16 max-w-4xl px-6">
         <div className="grid md:grid-cols-2 gap-6">
           <div className="group bg-white rounded-2xl p-6 border border-slate-100 shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:shadow-slate-200/70">
             <div className="flex items-center gap-2 mb-4">
@@ -733,7 +752,7 @@ function ContactSection() {
     return /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email);
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setErrors({});
     if (isSending) return;
@@ -777,8 +796,10 @@ function ContactSection() {
       }
 
       if (resp.status === 400) {
-        const data = await resp.json().catch(() => ({}));
-        setErrors({ ...(data.errors || {}), api: data.message || "入力内容に誤りがあります。" });
+        const responseBody: unknown = await resp.json().catch(() => null);
+        const parsedResponse = contactErrorResponseSchema.safeParse(responseBody);
+        const data = parsedResponse.success ? parsedResponse.data : {};
+        setErrors({ ...data.errors, api: data.message || "入力内容に誤りがあります。" });
         return;
       }
 
@@ -797,8 +818,8 @@ function ContactSection() {
       }
 
       setErrors({ api: "送信に失敗しました。時間をおいて再度お試しください。" });
-    } catch (err) {
-      if ((err as any)?.name === "AbortError") {
+    } catch (error) {
+      if (hasErrorName(error) && error.name === "AbortError") {
         setErrors({ api: "送信に時間がかかりすぎています。時間をおいて再度お試しください。" });
       } else {
         setErrors({ api: "送信に失敗しました。時間をおいて再度お試しください。" });

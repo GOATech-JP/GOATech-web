@@ -1,4 +1,5 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
+import { z } from "zod";
 
 const IP_WINDOW_MS = 60 * 1000; // 1 minute
 const IP_LIMIT = 6;
@@ -8,6 +9,31 @@ const MAX_BODY_CHARS = 20000;
 type EntryMap = Map<string, number[]>;
 const ipMap: EntryMap = new Map();
 const emailMap: EntryMap = new Map();
+
+const contactRequestSchema = z.object({
+  name: z.string().default(""),
+  company: z.string().default(""),
+  email: z.string().default(""),
+  message: z.string().default(""),
+  hp: z.string().default(""),
+});
+
+function parseRequestBody(body: unknown): unknown {
+  if (typeof body !== "string") return body;
+
+  try {
+    const parsed: unknown = JSON.parse(body);
+    return parsed;
+  } catch {
+    return null;
+  }
+}
+
+function hasErrorName(error: unknown): error is { name: string } {
+  return (
+    typeof error === "object" && error !== null && "name" in error && typeof error.name === "string"
+  );
+}
 
 function cleanupMap(map: EntryMap, windowMs: number) {
   const now = Date.now();
@@ -64,22 +90,21 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   try {
-    const rawBody = typeof req.body === "string" ? req.body : JSON.stringify(req.body || {});
+    const requestBody: unknown = req.body;
+    const rawBody =
+      typeof requestBody === "string" ? requestBody : JSON.stringify(requestBody ?? {});
     if (rawBody.length > MAX_BODY_CHARS) {
       res.status(413).json({ message: "Payload too large" });
       return;
     }
 
-    const {
-      name,
-      company = "",
-      email,
-      message = "",
-      hp,
-    } = (typeof req.body === "object" ? req.body : JSON.parse(rawBody || "{}")) as Record<
-      string,
-      any
-    >;
+    const parsedBody = contactRequestSchema.safeParse(parseRequestBody(requestBody));
+    if (!parsedBody.success) {
+      res.status(400).json({ message: "入力内容に誤りがあります。" });
+      return;
+    }
+
+    const { name, company, email, message, hp } = parsedBody.data;
 
     // Honeypot
     if (hp) {
@@ -117,7 +142,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     }
 
     // Rate limiting (IP & email)
-    const ip = (req.headers["x-forwarded-for"] || req.socket.remoteAddress || "") as string;
+    const forwardedFor = req.headers["x-forwarded-for"];
+    const ip =
+      (Array.isArray(forwardedFor) ? forwardedFor[0] : forwardedFor) ||
+      req.socket.remoteAddress ||
+      "";
     cleanupMap(ipMap, IP_WINDOW_MS);
     cleanupMap(emailMap, IP_WINDOW_MS);
 
@@ -222,19 +251,19 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             reply_to: CONTACT_EMAIL,
           }),
         });
-      } catch {
-        // Best-effort delivery to the sender. Keep the lead notification successful.
+      } catch (error) {
+        console.error("Failed to send contact confirmation email", error);
       }
 
       res.status(200).json({ message: "ok" });
-    } catch (err) {
-      if ((err as any)?.name === "AbortError") {
+    } catch (error) {
+      if (hasErrorName(error) && error.name === "AbortError") {
         res.status(504).json({ message: "メール送信がタイムアウトしました。" });
       } else {
         res.status(502).json({ message: "メール送信に失敗しました。" });
       }
     }
-  } catch (err) {
+  } catch {
     res.status(500).json({ message: "不明なエラーが発生しました。" });
   }
 }
