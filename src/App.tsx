@@ -5,6 +5,7 @@ import MangoRunEasterEgg, { useMangoRun } from "./components/MangoRunEasterEgg";
 import footerLogo from "./imports/goatech-footer-logo.png";
 import goatImage from "./imports/goatech-mission-vision-value.png";
 import goatLogo from "./imports/goatech-logo.png";
+import topPageImage from "./imports/toppage_image.png";
 
 const contactErrorResponseSchema = z.object({
   message: z.string().optional(),
@@ -302,7 +303,7 @@ function Hero() {
       <div className="relative flex flex-col lg:block">
         <div className="relative order-1 aspect-[1365/768] w-full overflow-hidden lg:min-h-[min(56.25vw,720px)]">
           <img
-            src="/hero-rental-dashboard.png"
+            src={topPageImage}
             alt="レンタルショップ向けRendixの管理画面"
             className="absolute inset-0 h-full w-full object-cover object-center"
           />
